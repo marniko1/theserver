@@ -1,0 +1,162 @@
+<html><head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Smart-Room</title>
+  <script src="jquery~1.js"></script>
+	<link rel="stylesheet" href="style.css">
+<SCRIPT>
+var xmlHttp=createXmlHttpObject();
+function createXmlHttpObject(){
+ if(window.XMLHttpRequest){
+    xmlHttp=new XMLHttpRequest();
+ }else{
+    xmlHttp=new ActiveXObject('Microsoft.XMLHTTP');
+ }
+ return xmlHttp;
+}
+ function process(){
+  if(xmlHttp.readyState==0 || xmlHttp.readyState==4){
+    xmlHttp.open('PUT','xml',true);
+    xmlHttp.onreadystatechange=handleServerResponse;
+    xmlHttp.send(null);
+  }
+  setTimeout('process()',500);
+ }
+function handleServerResponse(){
+ if(xmlHttp.readyState==4 && xmlHttp.status==200){
+   xmlResponse=xmlHttp.responseXML;
+  console.log(xmlResponse.getElementsByTagName('allID')[0].innerHTML);
+   
+   xmldoc = xmlResponse.getElementsByTagName('response');
+   message = xmldoc[0].firstChild.nodeValue;
+   document.getElementById('runtime').value=message;
+   
+   xmldoc = xmlResponse.getElementsByTagName('D16');
+   message = xmldoc[0].firstChild.nodeValue;
+   if (message==1){
+   document.getElementById('D16').checked=true; 
+   }
+   else{
+   document.getElementById('D16').checked=false; 
+   }
+   
+   
+      /*  
+   xmldoc = xmlResponse.getElementsByTagName('D5');
+   message = xmldoc[0].firstChild.nodeValue;
+     if (message==1){
+   document.getElementById('D5').checked=true; 
+   }
+   else{
+   document.getElementById('D5').checked=false; 
+   }    
+   */
+  }
+}
+	
+function sendbutton(Pin){
+server = "/Reley?state=" + Pin;
+request = new XMLHttpRequest();
+request.open("GET", server, true);
+request.send();
+
+}
+function set_alert(){
+h = document.getElementById('ALERTH').value;
+m = document.getElementById('ALERTM').value;
+server = "/Time?h="+h+"&m="+m+"&Set=Set";
+request = new XMLHttpRequest();
+request.open("GET", server, true);
+request.send();
+}
+</SCRIPT>
+	
+	
+</head>
+<BODY onload="process();">
+<BODY>
+<h3 class="top">WIFI - RELAY<span class="Apple-converted-space">&nbsp;</span>- Remote</h3>
+<div class="menu">
+	<a href='index.htm'>Home</a>
+	<a href="pult.htm">Remote</a>
+	<a href="service.htm">Maintenance</a>
+	<a href="log.htm">Logbook</a>
+	<a href="setup.htm">Setup</a> 
+	<a href="help.htm">Help</a>
+	<a href='edit'>File Upload</a>
+	
+</div>
+
+<table class="details">
+<caption>Smart Room</caption>
+    <tr>
+        <td>
+            
+            <p align="center">Gate<br></p>
+            
+            
+            <p align="center">Relay1: <input type="submit" name="state" value="OPEN" onclick="sendbutton(0);"> 
+                <!--
+					<input type="submit" name="state" value="OFF" onclick="sendbutton(1);"> 
+				-->
+					<input type="checkbox" name="D16" id="D16"></p>
+				
+           
+            <p align="center">Relay2: <input type="submit" name="state" value="ON" onclick="sendbutton(2);"> 
+			<!--
+                <input type="submit" name="state" value="OFF" onclick="sendbutton(3);"> 
+            <input type="checkbox" name="D5" id="D5"></p>
+			-->
+            <p align="left"> ESP running time: <input type="text" name="h" id="runtime" value="00" size="8"><br> 
+			
+                           </td>
+    </tr>
+    <tr>
+        <td>
+            <p>&nbsp;</p>
+        </td>
+    </tr>
+</table>
+
+<div class="copyright">Website:  <a href="http://ESP8266-ArduinoIDE.ru" target="_blank">ESP8266-ArduinoIDE.ru</a></div>
+
+<form id="test">
+  <div>
+    <label>Od: </label>
+    <input type="date" name="date_from" id="date_from">
+  </div>
+  <div>
+    <label>Do: </label>
+    <input type="date" name="date_to" id="date_to">
+  </div>
+  <input type="hidden" name="state" value="logcheck">
+  <input type="button" name="logcheck" id="logcheck" value="Log check" onclick="logCheck()">
+</form>
+<script type="text/javascript">
+  /*jQuery(document).ready(function(e){
+    $('#logcheck').on('click', function(){
+      console.log($(e.target).parents('form'));
+      $('#test').submit();
+    });
+  });*/
+  function logCheck(){
+	console.log('radi');
+	//jQuery('#test').submit();
+	var date_from = $('#date_from').val();
+	var date_to = $('#date_to').val();
+	console.log(date_from);
+	console.log(date_to);
+	$.ajax({
+		type: "GET",
+		url: "/Reley",
+		data: "date_from="+date_from+"&date_to="+date_to+"&state=4",
+		/*success: function(data){
+			var response = JSON.parse(data);
+			
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("some error"+errorThrown);
+		}*/
+	});
+  }
+</script>
+</body></html>

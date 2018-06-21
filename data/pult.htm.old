@@ -1,0 +1,110 @@
+<html><head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Smart-Room</title>
+	<link rel="stylesheet" href="style.css">
+<SCRIPT>
+var xmlHttp=createXmlHttpObject();
+function createXmlHttpObject(){
+ if(window.XMLHttpRequest){
+    xmlHttp=new XMLHttpRequest();
+ }else{
+    xmlHttp=new ActiveXObject('Microsoft.XMLHTTP');
+ }
+ return xmlHttp;
+}
+function process(){
+ if(xmlHttp.readyState==0 || xmlHttp.readyState==4){
+   xmlHttp.open('PUT','xml',true);
+   xmlHttp.onreadystatechange=handleServerResponse;
+   xmlHttp.send(null);
+ }
+ setTimeout('process()',500);
+}
+function handleServerResponse(){
+ if(xmlHttp.readyState==4 && xmlHttp.status==200){
+   xmlResponse=xmlHttp.responseXML;
+   
+   xmldoc = xmlResponse.getElementsByTagName('response');
+   message = xmldoc[0].firstChild.nodeValue;
+   document.getElementById('runtime').value=message;
+   
+   xmldoc = xmlResponse.getElementsByTagName('D16');
+   message = xmldoc[0].firstChild.nodeValue;
+   if (message==1){
+   document.getElementById('D16').checked=true; 
+   }
+   else{
+   document.getElementById('D16').checked=false; 
+   }
+   
+   
+        
+   xmldoc = xmlResponse.getElementsByTagName('D5');
+   message = xmldoc[0].firstChild.nodeValue;
+     if (message==1){
+   document.getElementById('D5').checked=true; 
+   }
+   else{
+   document.getElementById('D5').checked=false; 
+   }    
+  }
+}
+	
+function sendbutton(Pin){
+server = "/Reley?state=" + Pin;
+request = new XMLHttpRequest();
+request.open("GET", server, true);
+request.send();
+
+}
+function set_alert(){
+h = document.getElementById('ALERTH').value;
+m = document.getElementById('ALERTM').value;
+server = "/Time?h="+h+"&m="+m+"&Set=Set";
+request = new XMLHttpRequest();
+request.open("GET", server, true);
+request.send();
+}
+</SCRIPT>
+	
+	
+</head>
+<BODY onload="process();">
+<h3 class="top">SMART-РЕЛЕ<span class="Apple-converted-space">&nbsp;</span> - Пульт</h3>
+<div class="menu">
+	<a href='index.htm'>Главная</a>
+	<a href="pult.htm">Пульт</a>
+	<a href="setup.htm">Установки</a> 
+	<a href="help.htm">Помощь</a>
+	<a href='edit'>Загрузка файлов</a>
+	
+</div>
+
+<table class="details">
+<caption>Умная комната</caption>
+    <tr>
+        <td>
+            
+            <p align="center">Люстра<br></p>
+            
+            
+            <p align="center">Реле1: <input type="submit" name="state" value="ON" onclick="sendbutton(0);"> 
+                <input type="submit" name="state" value="OFF" onclick="sendbutton(1);"> 
+            <input type="checkbox" name="D16" id="D16"></p>
+            
+            
+            <p align="center">Реле2: <input type="submit" name="state" value="ON" onclick="sendbutton(2);"> 
+                <input type="submit" name="state" value="OFF" onclick="sendbutton(3);"> 
+            <input type="checkbox" name="D5" id="D5"></p>
+            <p align="left"> Время работы ESP: <input type="text" name="h" id="runtime" value="00" size="8"><br> 
+                           </td>
+    </tr>
+    <tr>
+        <td>
+            <p>&nbsp;</p>
+        </td>
+    </tr>
+</table>
+
+<div class="copyright">Сайт:  <a href="http://ESP8266-ArduinoIDE.ru" target="_blank">ESP8266-ArduinoIDE.ru</a></div>
+</body></html>

@@ -1,0 +1,58 @@
+<html>
+    <head>
+    	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    	<title>Smart-Room</title>
+    	<script type="text/javascript" src="jquery/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/log_page.class.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+        <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="col-6">
+                        <h3 class="top">WIFI - RELAY - Logbook</h3>
+                        <div class="menu">
+                            <a href='index.htm'>Home</a>
+                            <a href="pult.htm">Remote</a>
+                            <a href="service.htm">Maintenance</a>
+                            <a href="log.htm">Logbook</a>
+                            <a href="setup.htm">Setup</a> 
+                            <a href="help.htm">Help</a>
+                            <a href='edit'>File Upload</a>
+                        </div> 
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <label for="from">From </label>
+                    <!-- for testing only, real tag below -->
+                    <!-- <input type="date" name="from" id="from" value="2018-03-01"> -->
+                    <input type="date" name="from" id="from">
+                    <label for="to" class="ml-4">To </label>
+                    <!-- for testing only, real tag below -->
+                    <!-- <input type="date" name="to" id="to" value="2018-04-30"> -->
+                    <input type="date" name="to" id="to">
+                    <button name="btn" id="btn">Demand</button>
+                </div>
+                <!-- danasnja tabela po default-u -->
+                <table class="table table-bordered mt-3">
+                <caption>Logbook</caption>
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>card id</th>
+                            <th>log time</th>
+                            <th>permition</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>        
+    </body>
+</html>
